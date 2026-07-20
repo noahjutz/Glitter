@@ -65,7 +65,7 @@ int main() {
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
   glEnableVertexAttribArray(0);
 
-  // Load vertex shader
+  // Create vertex shader
 
   const char *vertexShaderSource =
       "#version 330 core\n"
@@ -89,46 +89,80 @@ int main() {
               << compileLog << std::endl;
   }
 
-  // Load fragment shader
+  // Create shader program 1
 
-  const char *fragmentShaderSource = "#version 330 core\n"
+  const char *fragmentShader1Source = "#version 330 core\n"
                                      "out vec4 FragColor;\n"
                                      "void main() {\n"
                                      "FragColor = vec4(.1, .8, .4, 1.0);\n"
                                      "}\0";
 
-  unsigned int fragmentShader;
-  fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-  glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
-  glCompileShader(fragmentShader);
+  unsigned int fragmentShader1;
+  fragmentShader1 = glCreateShader(GL_FRAGMENT_SHADER);
+  glShaderSource(fragmentShader1, 1, &fragmentShader1Source, NULL);
+  glCompileShader(fragmentShader1);
 
-  glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+  glGetShaderiv(fragmentShader1, GL_COMPILE_STATUS, &success);
   if (!success) {
     char compileLog[512];
-    glGetShaderInfoLog(fragmentShader, 512, NULL, compileLog);
+    glGetShaderInfoLog(fragmentShader1, 512, NULL, compileLog);
     std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED" << std::endl
               << compileLog << std::endl;
   }
 
-  // Create Shader Program
+  unsigned int shaderProgram1;
+  shaderProgram1 = glCreateProgram();
+  glAttachShader(shaderProgram1, vertexShader);
+  glAttachShader(shaderProgram1, fragmentShader1);
+  glLinkProgram(shaderProgram1);
 
-  unsigned int shaderProgram;
-  shaderProgram = glCreateProgram();
-  glAttachShader(shaderProgram, vertexShader);
-  glDeleteShader(vertexShader);
-  glAttachShader(shaderProgram, fragmentShader);
-  glDeleteShader(fragmentShader);
-  glLinkProgram(shaderProgram);
-
-  glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+  glGetProgramiv(shaderProgram1, GL_LINK_STATUS, &success);
   if (!success) {
     char linkLog[512];
-    glGetProgramInfoLog(shaderProgram, 512, NULL, linkLog);
+    glGetProgramInfoLog(shaderProgram1, 512, NULL, linkLog);
     std::cout << "ERROR::PROGRAM::COMPILATION_FAILED" << std::endl
               << linkLog << std::endl;
   }
 
-  glUseProgram(shaderProgram);
+  // Create shader program 2
+
+  const char *fragmentShader2Source = "#version 330 core\n"
+                                     "out vec4 FragColor;\n"
+                                     "void main() {\n"
+                                     "FragColor = vec4(1, .1, .5, 1.0);\n"
+                                     "}\0";
+
+  unsigned int fragmentShader2;
+  fragmentShader2 = glCreateShader(GL_FRAGMENT_SHADER);
+  glShaderSource(fragmentShader2, 1, &fragmentShader2Source, NULL);
+  glCompileShader(fragmentShader2);
+
+  glGetShaderiv(fragmentShader2, GL_COMPILE_STATUS, &success);
+  if (!success) {
+    char compileLog[512];
+    glGetShaderInfoLog(fragmentShader2, 512, NULL, compileLog);
+    std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED" << std::endl
+              << compileLog << std::endl;
+  }
+
+  unsigned int shaderProgram2;
+  shaderProgram2 = glCreateProgram();
+  glAttachShader(shaderProgram2, vertexShader);
+  glAttachShader(shaderProgram2, fragmentShader2);
+  glLinkProgram(shaderProgram2);
+
+  glGetProgramiv(shaderProgram2, GL_LINK_STATUS, &success);
+  if (!success) {
+    char linkLog[512];
+    glGetProgramInfoLog(shaderProgram2, 512, NULL, linkLog);
+    std::cout << "ERROR::PROGRAM::COMPILATION_FAILED" << std::endl
+              << linkLog << std::endl;
+  }
+
+  glDeleteShader(vertexShader);
+  glDeleteShader(fragmentShader1);
+  glDeleteShader(fragmentShader2);
+
 
   // Rendering Loop
   while (glfwWindowShouldClose(mWindow) == false) {
@@ -140,8 +174,11 @@ int main() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     glBindVertexArray(VAO1);
+    glUseProgram(shaderProgram1);
     glDrawArrays(GL_TRIANGLES, 0, 3);
+
     glBindVertexArray(VAO2);
+    glUseProgram(shaderProgram2);
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
     // Flip Buffers and Draw

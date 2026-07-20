@@ -1,5 +1,6 @@
 // Local Headers
 #include "glitter.hpp"
+#include "vertices.hpp"
 
 // System Headers
 #include <GLFW/glfw3.h>

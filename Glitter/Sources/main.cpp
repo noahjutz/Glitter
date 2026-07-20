@@ -13,7 +13,7 @@
 
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
-int main(int argc, char *argv[]) {
+int main() {
 
   // Load GLFW and Create a Window
   glfwInit();

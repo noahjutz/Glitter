@@ -37,24 +37,33 @@ int main() {
 
   glfwSetFramebufferSizeCallback(mWindow, framebuffer_size_callback);
 
-  // Load vertices into VBO and bind to VAO
+  // Load triangle 1
 
-  unsigned int VAO;
-  glGenVertexArrays(1, &VAO);
-  glBindVertexArray(VAO);
+  unsigned int VAO1;
+  glGenVertexArrays(1, &VAO1);
+  glBindVertexArray(VAO1);
 
-  unsigned int VBO;
-  glGenBuffers(1, &VBO);
-  glBindBuffer(GL_ARRAY_BUFFER, VBO);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+  unsigned int VBO1;
+  glGenBuffers(1, &VBO1);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO1);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_tri1), vertices_tri1, GL_STATIC_DRAW);
 
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); // layout (loaction = 0) in vec3 aPos
   glEnableVertexAttribArray(0);
 
-  unsigned int EBO;
-  glGenBuffers(1, &EBO);
-  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+  // Load triangle 2
+
+  unsigned int VAO2;
+  glGenVertexArrays(1, &VAO2);
+  glBindVertexArray(VAO2);
+
+  unsigned int VBO2;
+  glGenBuffers(1, &VBO2);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO2);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_tri2), vertices_tri2, GL_STATIC_DRAW);
+
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  glEnableVertexAttribArray(0);
 
   // Load vertex shader
 
@@ -129,7 +138,11 @@ int main() {
     // Background Fill Color
     glClearColor(0.65f, 0.95f, 0.55f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+
+    glBindVertexArray(VAO1);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glBindVertexArray(VAO2);
+    glDrawArrays(GL_TRIANGLES, 0, 3);
 
     // Flip Buffers and Draw
     glfwSwapBuffers(mWindow);

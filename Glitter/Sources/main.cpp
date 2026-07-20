@@ -80,7 +80,7 @@ int main() {
   const char *fragmentShaderSource = "#version 330 core\n"
                                      "out vec4 FragColor;\n"
                                      "void main() {\n"
-                                     "FragColor = vec4(1.0, 1.0, 1.0, 1.0);\n"
+                                     "FragColor = vec4(.1, .8, .4, 1.0);\n"
                                      "}\0";
 
   unsigned int fragmentShader;
@@ -122,9 +122,9 @@ int main() {
       glfwSetWindowShouldClose(mWindow, true);
 
     // Background Fill Color
-    glClearColor(0.25f, 0.25f, 0.25f, 1.0f);
+    glClearColor(0.65f, 0.95f, 0.55f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawArrays(GL_TRIANGLES, 0, 6);
 
     // Flip Buffers and Draw
     glfwSwapBuffers(mWindow);

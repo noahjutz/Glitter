@@ -36,6 +36,12 @@ int main(int argc, char *argv[]) {
 
   glfwSetFramebufferSizeCallback(mWindow, framebuffer_size_callback);
 
+  // Load vertices
+  unsigned int VBO;
+  glGenBuffers(1, &VBO);
+  glBindBuffer(GL_ARRAY_BUFFER, VBO);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
   // Rendering Loop
   while (glfwWindowShouldClose(mWindow) == false) {
     if (glfwGetKey(mWindow, GLFW_KEY_ESCAPE) == GLFW_PRESS)

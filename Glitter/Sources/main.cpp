@@ -51,6 +51,11 @@ int main() {
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); // layout (loaction = 0) in vec3 aPos
   glEnableVertexAttribArray(0);
 
+  unsigned int EBO;
+  glGenBuffers(1, &EBO);
+  glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+  glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
   // Load vertex shader
 
   const char *vertexShaderSource =
@@ -124,7 +129,7 @@ int main() {
     // Background Fill Color
     glClearColor(0.65f, 0.95f, 0.55f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 
     // Flip Buffers and Draw
     glfwSwapBuffers(mWindow);

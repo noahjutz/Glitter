@@ -84,9 +84,29 @@ int main(int argc, char *argv[]) {
   if (!success) {
     char compileLog[512];
     glGetShaderInfoLog(fragmentShader, 512, NULL, compileLog);
-    std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED" << std::endl
+    std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED" << std::endl
               << compileLog << std::endl;
   }
+
+  // Create Shader Program
+
+  unsigned int shaderProgram;
+  shaderProgram = glCreateProgram();
+  glAttachShader(shaderProgram, vertexShader);
+  glDeleteShader(vertexShader);
+  glAttachShader(shaderProgram, fragmentShader);
+  glDeleteShader(fragmentShader);
+  glLinkProgram(shaderProgram);
+
+  glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
+  if (!success) {
+    char linkLog[512];
+    glGetProgramInfoLog(shaderProgram, 512, NULL, linkLog);
+    std::cout << "ERROR::PROGRAM::COMPILATION_FAILED" << std::endl
+              << linkLog << std::endl;
+  }
+
+  glUseProgram(shaderProgram);
 
   // Rendering Loop
   while (glfwWindowShouldClose(mWindow) == false) {

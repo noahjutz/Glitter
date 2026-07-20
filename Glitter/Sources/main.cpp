@@ -61,9 +61,31 @@ int main(int argc, char *argv[]) {
   int success;
   glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
   if (!success) {
-      char compileLog[512];
-      glGetShaderInfoLog(vertexShader, 512, NULL, compileLog);
-      std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED" << std::endl << compileLog << std::endl;
+    char compileLog[512];
+    glGetShaderInfoLog(vertexShader, 512, NULL, compileLog);
+    std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED" << std::endl
+              << compileLog << std::endl;
+  }
+
+  // Load fragment shader
+
+  const char *fragmentShaderSource = "#version 330 core\n"
+                                     "out vec4 FragColor;\n"
+                                     "void main() {\n"
+                                     "FragColor = vec4(1.0, 1.0, 1.0, 1.0);\n"
+                                     "}\0";
+
+  unsigned int fragmentShader;
+  fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+  glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
+  glCompileShader(fragmentShader);
+
+  glGetShaderiv(fragmentShader, GL_COMPILE_STATUS, &success);
+  if (!success) {
+    char compileLog[512];
+    glGetShaderInfoLog(fragmentShader, 512, NULL, compileLog);
+    std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED" << std::endl
+              << compileLog << std::endl;
   }
 
   // Rendering Loop

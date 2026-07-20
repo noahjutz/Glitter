@@ -1,11 +1,17 @@
 #pragma once
 
 float vertices[] = {
-     0.5f,  0.5f, 0.0f,  // top right
-     0.5f, -0.5f, 0.0f,  // bottom right
-    -0.5f, -0.5f, 0.0f,  // bottom left
-    -0.5f,  0.2f, 0.0f   // top left
+    // Tri 1
+    0.1f, 0.1f, 0.0f,
+    0.75f, 0.1f, 0.0f,
+    0.5f, 0.5f, 0.0f,
+
+    // Tri 2
+    -0.1f, -0.1f, 0.0f,
+    -0.1f, -0.9f, 0.0f,
+    -0.9f, -0.1f, 0.0f
 };
+
 unsigned int indices[] = {  // note that we start from 0!
     0, 1, 3,   // first triangle
     1, 2, 3    // second triangle

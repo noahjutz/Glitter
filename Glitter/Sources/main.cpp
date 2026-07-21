@@ -78,7 +78,7 @@ int main() {
   Shader p1 =
       Shader("Glitter/Shaders/myvert.vert", "Glitter/Shaders/myfrag.frag");
 
-  glm::mat4 trans = glm::scale(glm::mat4(1.0), glm::vec3(0.5));
+  glm::mat4 trans = glm::mat4(1.0);
 
   // Rendering Loop
   while (glfwWindowShouldClose(mWindow) == false) {
@@ -87,13 +87,16 @@ int main() {
 
     float t = glfwGetTime();
 
+    glm::mat4 R = glm::mat4_cast(
+        glm::angleAxis(t * glm::two_pi<float>(), glm::vec3(1.0, 0.0, 0.0)));
+
     // Background Fill Color
     glClearColor(0.65f, 0.95f, 0.55f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
 
     glBindVertexArray(VAO1);
     p1.use();
-    p1.setMat("trans", trans);
+    p1.setMat("trans", R);
     float offset = sin(t) * 0.5;
     p1.setFloat("uniOff", offset);
     glDrawArrays(GL_TRIANGLES, 0, 3);

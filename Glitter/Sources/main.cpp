@@ -73,9 +73,11 @@ int main() {
   const char *vertexShaderSource =
       "#version 330 core\n"
       "layout (location = 0) in vec3 aPos;\n"
+      "out vec4 vertexColor;\n"
       "void main()\n"
       "{\n"
       "   gl_Position = vec4(aPos.x, aPos.y, aPos.z, 1.0);\n"
+      "   vertexColor = vec4(1.0, 0.5, 0.5, 1.0);\n"
       "}\0";
 
   unsigned int vertexShader;
@@ -96,8 +98,9 @@ int main() {
 
   const char *fragmentShader1Source = "#version 330 core\n"
                                       "out vec4 FragColor;\n"
+                                      "in vec4 vertexColor;\n"
                                       "void main() {\n"
-                                      "FragColor = vec4(.1, .8, .4, 1.0);\n"
+                                      "FragColor = vertexColor;\n"
                                       "}\0";
 
   unsigned int fragmentShader1;
@@ -132,7 +135,7 @@ int main() {
   const char *fragmentShader2Source = "#version 330 core\n"
                                       "out vec4 FragColor;\n"
                                       "void main() {\n"
-                                      "FragColor = vec4(1, .1, .5, 1.0);\n"
+                                      "FragColor = vec4(1.0, 0.0, 0.0, 1.0);\n"
                                       "}\0";
 
   unsigned int fragmentShader2;

@@ -1,5 +1,6 @@
 // Local Headers
 #include "glitter.hpp"
+#include "shader.hpp"
 #include "vertices.hpp"
 
 // System Headers
@@ -71,109 +72,10 @@ int main() {
   glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
   glEnableVertexAttribArray(0);
 
-  // Create vertex shader
+  // Create shader program
 
-  const char *vertexShaderSource =
-      "#version 330 core\n"
-      "layout (location = 0) in vec3 aPos;\n"
-      "layout (location = 1) in vec3 aCol;\n"
-      "uniform float uniOff;\n"
-      "out vec4 vertexColor;\n"
-      "void main()\n"
-      "{\n"
-      "   gl_Position = vec4(aPos.x + uniOff, aPos.y, aPos.z, 1.0);\n"
-      "   vertexColor = vec4(aCol, 1.0);\n"
-      "}\0";
-
-  unsigned int vertexShader;
-  vertexShader = glCreateShader(GL_VERTEX_SHADER);
-  glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-  glCompileShader(vertexShader);
-
-  int success;
-  glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
-  if (!success) {
-    char compileLog[512];
-    glGetShaderInfoLog(vertexShader, 512, NULL, compileLog);
-    std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED" << std::endl
-              << compileLog << std::endl;
-  }
-
-  // Create shader program 1
-
-  const char *fragmentShader1Source = "#version 330 core\n"
-                                      "out vec4 FragColor;\n"
-                                      "in vec4 vertexColor;\n"
-                                      "void main() {\n"
-                                      "FragColor = vertexColor;\n"
-                                      "}\0";
-
-  unsigned int fragmentShader1;
-  fragmentShader1 = glCreateShader(GL_FRAGMENT_SHADER);
-  glShaderSource(fragmentShader1, 1, &fragmentShader1Source, NULL);
-  glCompileShader(fragmentShader1);
-
-  glGetShaderiv(fragmentShader1, GL_COMPILE_STATUS, &success);
-  if (!success) {
-    char compileLog[512];
-    glGetShaderInfoLog(fragmentShader1, 512, NULL, compileLog);
-    std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED" << std::endl
-              << compileLog << std::endl;
-  }
-
-  unsigned int shaderProgram1;
-  shaderProgram1 = glCreateProgram();
-  glAttachShader(shaderProgram1, vertexShader);
-  glAttachShader(shaderProgram1, fragmentShader1);
-  glLinkProgram(shaderProgram1);
-
-  glGetProgramiv(shaderProgram1, GL_LINK_STATUS, &success);
-  if (!success) {
-    char linkLog[512];
-    glGetProgramInfoLog(shaderProgram1, 512, NULL, linkLog);
-    std::cout << "ERROR::PROGRAM::COMPILATION_FAILED" << std::endl
-              << linkLog << std::endl;
-  }
-
-  // Create shader program 2
-
-  const char *fragmentShader2Source = "#version 330 core\n"
-                                      "out vec4 FragColor;\n"
-                                      "uniform vec4 uniCol;\n"
-                                      "void main() {\n"
-                                      "FragColor = uniCol;\n"
-                                      "}\0";
-
-  unsigned int fragmentShader2;
-  fragmentShader2 = glCreateShader(GL_FRAGMENT_SHADER);
-  glShaderSource(fragmentShader2, 1, &fragmentShader2Source, NULL);
-  glCompileShader(fragmentShader2);
-
-  glGetShaderiv(fragmentShader2, GL_COMPILE_STATUS, &success);
-  if (!success) {
-    char compileLog[512];
-    glGetShaderInfoLog(fragmentShader2, 512, NULL, compileLog);
-    std::cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED" << std::endl
-              << compileLog << std::endl;
-  }
-
-  unsigned int shaderProgram2;
-  shaderProgram2 = glCreateProgram();
-  glAttachShader(shaderProgram2, vertexShader);
-  glAttachShader(shaderProgram2, fragmentShader2);
-  glLinkProgram(shaderProgram2);
-
-  glGetProgramiv(shaderProgram2, GL_LINK_STATUS, &success);
-  if (!success) {
-    char linkLog[512];
-    glGetProgramInfoLog(shaderProgram2, 512, NULL, linkLog);
-    std::cout << "ERROR::PROGRAM::COMPILATION_FAILED" << std::endl
-              << linkLog << std::endl;
-  }
-
-  glDeleteShader(vertexShader);
-  glDeleteShader(fragmentShader1);
-  glDeleteShader(fragmentShader2);
+  Shader p1 =
+      Shader("Glitter/Shaders/myvert.vert", "Glitter/Shaders/myfrag.frag");
 
   // Rendering Loop
   while (glfwWindowShouldClose(mWindow) == false) {
@@ -187,25 +89,15 @@ int main() {
     glClear(GL_COLOR_BUFFER_BIT);
 
     glBindVertexArray(VAO1);
-    glUseProgram(shaderProgram1);
-
+    p1.use();
     float offset = sin(t) * 0.5;
-    int vertexOffsetLocation = glGetUniformLocation(shaderProgram1, "uniOff");
-    glUniform1f(vertexOffsetLocation, offset);
-
+    p1.setFloat("uniOff", offset);
     glDrawArrays(GL_TRIANGLES, 0, 3);
 
-    glBindVertexArray(VAO2);
-    glUseProgram(shaderProgram2);
-
-    // Uniform fg color
-
-    float r = (sin(t) + 1) / 2;
-    float g = (cos(t) + 1) / 2;
-    int vertexColorLocation = glGetUniformLocation(shaderProgram2, "uniCol");
-    glUniform4f(vertexColorLocation, r, g, 0.0f, 0.0f);
-
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    // glBindVertexArray(VAO2);
+    // float r = (sin(t) + 1) / 2;
+    // float g = (cos(t) + 1) / 2;
+    // glDrawArrays(GL_TRIANGLES, 0, 3);
 
     // Flip Buffers and Draw
     glfwSwapBuffers(mWindow);

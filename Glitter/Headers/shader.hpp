@@ -45,6 +45,7 @@ inline Shader::Shader(const char *vertexPath, const char *fragmentPath) {
   char infoLog[512];
 
   vertex = glCreateShader(GL_VERTEX_SHADER);
+  glShaderSource(vertex, 1, &vShaderCode, NULL);
   glCompileShader(vertex);
   glGetShaderiv(vertex, GL_COMPILE_STATUS, &success);
   if (!success) {
@@ -54,6 +55,7 @@ inline Shader::Shader(const char *vertexPath, const char *fragmentPath) {
   }
 
   fragment = glCreateShader(GL_FRAGMENT_SHADER);
+  glShaderSource(fragment, 1, &fShaderCode, NULL);
   glCompileShader(fragment);
   glGetShaderiv(fragment, GL_COMPILE_STATUS, &success);
   if (!success) {

@@ -46,10 +46,10 @@ int main() {
   unsigned int VBO1;
   glGenBuffers(1, &VBO1);
   glBindBuffer(GL_ARRAY_BUFFER, VBO1);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_tri1), vertices_tri1,
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_tri3), vertices_tri3,
                GL_STATIC_DRAW);
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
                         (void *)0); // layout (loaction = 0) in vec3 aPos
   glEnableVertexAttribArray(0);
 
@@ -185,7 +185,7 @@ int main() {
     glBindVertexArray(VAO1);
     glUseProgram(shaderProgram1);
 
-    float offset = sin(t);
+    float offset = sin(t) * 0.5;
     int vertexOffsetLocation = glGetUniformLocation(shaderProgram1, "uniOff");
     glUniform1f(vertexOffsetLocation, offset);
 

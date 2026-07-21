@@ -46,9 +46,11 @@ int main() {
   unsigned int VBO1;
   glGenBuffers(1, &VBO1);
   glBindBuffer(GL_ARRAY_BUFFER, VBO1);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_tri1), vertices_tri1, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_tri1), vertices_tri1,
+               GL_STATIC_DRAW);
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0); // layout (loaction = 0) in vec3 aPos
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float),
+                        (void *)0); // layout (loaction = 0) in vec3 aPos
   glEnableVertexAttribArray(0);
 
   // Load triangle 2
@@ -60,9 +62,10 @@ int main() {
   unsigned int VBO2;
   glGenBuffers(1, &VBO2);
   glBindBuffer(GL_ARRAY_BUFFER, VBO2);
-  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_tri2), vertices_tri2, GL_STATIC_DRAW);
+  glBufferData(GL_ARRAY_BUFFER, sizeof(vertices_tri2), vertices_tri2,
+               GL_STATIC_DRAW);
 
-  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+  glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void *)0);
   glEnableVertexAttribArray(0);
 
   // Create vertex shader
@@ -92,10 +95,10 @@ int main() {
   // Create shader program 1
 
   const char *fragmentShader1Source = "#version 330 core\n"
-                                     "out vec4 FragColor;\n"
-                                     "void main() {\n"
-                                     "FragColor = vec4(.1, .8, .4, 1.0);\n"
-                                     "}\0";
+                                      "out vec4 FragColor;\n"
+                                      "void main() {\n"
+                                      "FragColor = vec4(.1, .8, .4, 1.0);\n"
+                                      "}\0";
 
   unsigned int fragmentShader1;
   fragmentShader1 = glCreateShader(GL_FRAGMENT_SHADER);
@@ -127,10 +130,10 @@ int main() {
   // Create shader program 2
 
   const char *fragmentShader2Source = "#version 330 core\n"
-                                     "out vec4 FragColor;\n"
-                                     "void main() {\n"
-                                     "FragColor = vec4(1, .1, .5, 1.0);\n"
-                                     "}\0";
+                                      "out vec4 FragColor;\n"
+                                      "void main() {\n"
+                                      "FragColor = vec4(1, .1, .5, 1.0);\n"
+                                      "}\0";
 
   unsigned int fragmentShader2;
   fragmentShader2 = glCreateShader(GL_FRAGMENT_SHADER);
@@ -162,7 +165,6 @@ int main() {
   glDeleteShader(vertexShader);
   glDeleteShader(fragmentShader1);
   glDeleteShader(fragmentShader2);
-
 
   // Rendering Loop
   while (glfwWindowShouldClose(mWindow) == false) {

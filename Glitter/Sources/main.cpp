@@ -37,33 +37,6 @@ int main() {
 
   glfwSetFramebufferSizeCallback(mWindow, framebuffer_size_callback);
 
-  int nAttributes;
-  glGetIntegerv(GL_MAX_VERTEX_ATTRIBS, &nAttributes);
-  std::cout << nAttributes << std::endl;
-
-  GLint range[2];
-  GLint precision;
-
-  glGetShaderPrecisionFormat(GL_FRAGMENT_SHADER, GL_LOW_FLOAT, range, &precision);
-  std::cout << range[0] << " " << range[1] << " " << precision << std::endl;
-
-  glGetShaderPrecisionFormat(GL_FRAGMENT_SHADER, GL_MEDIUM_FLOAT, range, &precision);
-  std::cout << range[0] << " " << range[1] << " " << precision << std::endl;
-
-  glGetShaderPrecisionFormat(GL_FRAGMENT_SHADER, GL_HIGH_FLOAT, range, &precision);
-  std::cout << range[0] << " " << range[1] << " " << precision << std::endl;
-
-  glGetShaderPrecisionFormat(GL_FRAGMENT_SHADER, GL_LOW_INT, range, &precision);
-  std::cout << range[0] << " " << range[1] << " " << precision << std::endl;
-
-  glGetShaderPrecisionFormat(GL_FRAGMENT_SHADER, GL_MEDIUM_INT, range, &precision);
-  std::cout << range[0] << " " << range[1] << " " << precision << std::endl;
-
-  glGetShaderPrecisionFormat(GL_FRAGMENT_SHADER, GL_HIGH_INT, range, &precision);
-  std::cout << range[0] << " " << range[1] << " " << precision << std::endl;
-
-  return 0;
-
   // Load triangle 1
 
   unsigned int VAO1;
